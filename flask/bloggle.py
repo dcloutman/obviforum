@@ -1,4 +1,12 @@
+"""
+Bloggle Flask application file.
+Author: David Cloutman
+License: MIT
+"""
+
 from flask import Flask
+import BloggleConfig as config
+
 app = Flask(__name__)
 
 @app.route('/')
