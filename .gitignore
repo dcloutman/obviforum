@@ -1,1 +1,3 @@
 flask/BloggleConfig.py
+*.pyc
+
