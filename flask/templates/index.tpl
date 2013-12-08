@@ -7,10 +7,10 @@
 	</p>
 	<h2>Start a New Discussion</h2>
 	<form action="/thread/create" method="post">
-		<label for="new_thread_title">Thread Title</label>
+		<label for="new_thread_title">Thread Title</label><br />
 		<input id="new_thread_title" class="post_title" type="text" placeholder="Subject of new thread" /><br />
-		<label for="new_thead_content">Message</label>
-		<textarea class="post_content" id="new_thread_content"></textarea>
+		<label for="new_thread_content">Message</label><br />
+		<textarea class="post_content" id="new_thread_content" placeholder="The content of your post"></textarea><br />
 		<button class="post_submit" type="submit">Start New Thread</button>
 	</form>
 
@@ -27,4 +27,5 @@
 		<li><a href="/thread/9">Thread 9</a></li>
 		<li><a href="/thread/10">Thread 10</a></li>
 	</ul>
+
 {% endblock %}

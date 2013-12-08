@@ -18,5 +18,9 @@ if config.debug_mode:
 def index():
 	return render_template('index.tpl')
 
+@app.route('/thread/<thread_id>')
+def view_thread(thread_id = None):
+	return render_template('thread.tpl', thread_id = thread_id)
+
 if __name__ == '__main__':
 	app.run(host = config.application_host)
