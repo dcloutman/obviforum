@@ -4,14 +4,26 @@
 	font-family: 'Roboto', Verdana, sans-serif;
 }
 
-body {
-	margin: 0px;
+html, body {
+	margin: 0;
 	background-color: #999999;
+	height: 100%;
 }
 
 #outer {
-	width: 917px;
+	position: relative;
+	width: 1020px;
+	height: auto;
+	min-height: 100%;
 	margin: 0 auto;
-	padding:  0 10px;
+	padding: 0 10px;
 	background-color: #ffffff;
+}
+
+h1, h2, h3, h4, h5, h6, form {
+	margin: 0;
+}
+
+div.clear {
+	clear: both;
 }

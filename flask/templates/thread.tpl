@@ -47,8 +47,8 @@
 
 	<h2>Post Response</h2>
 	<form action="/thread/create" method="post">
-		<label for="thread_response">Message</label>
-		<textarea class="post_content" id="thread_response"></textarea>
+		<label for="thread_response">Message</label><br />
+		<textarea class="post_content" id="thread_response"></textarea><br />
 		<button class="post_submit" type="submit">Post Response</button>
 	</form>
 

@@ -9,6 +9,7 @@
 	<body>
 		<div id="outer">
 			{% block body_content %}{% endblock %}
+			<div class="clear"></div>
 		</div>
 	</body>
 </html>
