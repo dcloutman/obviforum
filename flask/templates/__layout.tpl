@@ -3,10 +3,12 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>{% block title %}{% endblock %}</title>
-		<!--<link rel="stylesheet" href="style.css">
-		<script src="script.js"></script>-->
+		<link rel="stylesheet" type="text/css" href="/static/css/main.css" />
+		<!--<script src="script.js"></script>-->
 	</head>
 	<body>
-		{% block body_content %}{% endblock %}
+		<div id="outer">
+			{% block body_content %}{% endblock %}
+		</div>
 	</body>
 </html>
