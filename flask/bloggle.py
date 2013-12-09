@@ -21,7 +21,8 @@ def index():
 
 @app.route('/thread/<thread_id>')
 def view_thread(thread_id = None):
-	return render_template('thread.tpl', thread_id = thread_id)
+	thread_subject = "Thread #%s Topic" % thread_id
+	return render_template('thread.tpl', thread_subject = thread_subject)
 
 if __name__ == '__main__':
 	app.run(host = config.application_host)

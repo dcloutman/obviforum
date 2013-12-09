@@ -1,12 +1,12 @@
 {% extends "__layout.tpl" %}
-{% block title %}Welcome to Bloggle{% endblock %}
+{% block title %}{{ thread_subject }}{% endblock %}
 {% block body_content %}
 	<nav>
 		<a href="/">Home</a>
 	</nav>
 	<article>
 		<header>
-			<h1>Thread #{{ thread_id }} Topic</h1>
+			<h1>{{ thread_subject }}</h1>
 		</header>
 		<article>
 			<header>
