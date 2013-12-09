@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Bloggle Flask application file.
 Author: David Cloutman
