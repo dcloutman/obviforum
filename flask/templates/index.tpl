@@ -1,7 +1,7 @@
 {% extends "__layout.tpl" %}
-{% block title %}Welcome to Bloggle{% endblock %}
+{% block title %}Welcome to ObviForums{% endblock %}
 {% block body_content %}
-	<h1>Welcome to the Bloggle prototype.</h1>
+	<h1>Welcome to the ObviForums prototype.</h1>
 	<p>
 		At this point we are mocking up the un-styled look and feel of what we what the end functionality to be for a logged-in user.
 	</p>

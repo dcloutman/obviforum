@@ -6,7 +6,7 @@ License: MIT
 """
 
 from flask import Flask, url_for, render_template, session
-import BloggleConfig as config
+import ObviForumsConfig as config
 
 app = Flask(__name__)
 
