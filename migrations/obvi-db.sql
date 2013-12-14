@@ -26,6 +26,7 @@ CREATE TABLE `Posts` (
   `post_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `thread_id` bigint(20) unsigned NOT NULL,
   `user_id` mediumint(8) unsigned NOT NULL,
+  `post_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `post_message` text NOT NULL,
   PRIMARY KEY (`post_id`,`user_id`),
   KEY `user_id_to_post_fk_idx` (`user_id`),
@@ -34,15 +35,6 @@ CREATE TABLE `Posts` (
   CONSTRAINT `user_id_to_post_fk` FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Stores posts that users make to a thread.';
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Posts`
---
-
-LOCK TABLES `Posts` WRITE;
-/*!40000 ALTER TABLE `Posts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Posts` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `Threads`
@@ -63,15 +55,6 @@ CREATE TABLE `Threads` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Threads`
---
-
-LOCK TABLES `Threads` WRITE;
-/*!40000 ALTER TABLE `Threads` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Threads` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `Users`
 --
 
@@ -89,15 +72,6 @@ CREATE TABLE `Users` (
   UNIQUE KEY `email_UNIQUE` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Users`
---
-
-LOCK TABLES `Users` WRITE;
-/*!40000 ALTER TABLE `Users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Users` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -108,4 +82,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-12-11  8:31:35
+-- Dump completed on 2013-12-14  7:43:40
