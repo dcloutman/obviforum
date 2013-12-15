@@ -5,8 +5,8 @@ Author: David Cloutman
 License: MIT
 """
 
-from flask import Flask, url_for, render_template, session
-import ObviForumsConfig as config
+from flask import Flask, url_for, render_template, flash, redirect, session
+import ObviConfig as config
 
 app = Flask(__name__)
 
