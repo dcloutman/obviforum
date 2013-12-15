@@ -4,6 +4,9 @@ from datetime import datetime
 import hashlib
 
 class User(db.Model):
+	__tablename__ = 'Users'
+
+	# Declare columns for members.
 	user_id = db.Column(db.Integer, primary_key = True)
 	username = db.Column(db.String(128), unique = True)
 	password = db.Column(db.String(256))
