@@ -6,13 +6,18 @@ License: MIT
 """
 
 from flask import Flask, url_for, render_template, flash, redirect, session
-import ObviConfig as config
+from flask.ext.sqlalchemy import SQLAlchemy
+import ObviConfig as obvi_config
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://{0}:{1}@{2}/{3}".format(obvi_config.mysql_username, obvi_config.mysql_password, obvi_config.mysql_host, obvi_config.mysql_database)
+db = SQLAlchemy(app)
 
 # Enable debug mode if configured.
-if config.debug_mode:
+if obvi_config.debug_mode:
 	app.debug = True
+
+import models
 
 
 @app.route('/')
@@ -25,4 +30,4 @@ def view_thread(thread_id = None):
 	return render_template('thread.tpl', thread_subject = thread_subject)
 
 if __name__ == '__main__':
-	app.run(host = config.application_host)
+	app.run(host = obvi_config.application_host)
