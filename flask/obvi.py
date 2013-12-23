@@ -9,7 +9,11 @@ from flask import Flask, url_for, render_template, flash, redirect, session
 from flask.ext.sqlalchemy import SQLAlchemy
 import ObviConfig as obvi_config
 
-app = Flask(__name__)
+template_folder = "themes/{0}/templates".format(obvi_config.theme)
+static_folder = "themes/{0}/static".format(obvi_config.theme)
+
+
+app = Flask(__name__, template_folder = template_folder, static_folder = static_folder)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://{0}:{1}@{2}/{3}".format(obvi_config.mysql_username, obvi_config.mysql_password, obvi_config.mysql_host, obvi_config.mysql_database)
 db = SQLAlchemy(app)
 

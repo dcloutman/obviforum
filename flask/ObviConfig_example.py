@@ -31,6 +31,9 @@ mysql_password = ''
 user_password_salt = ''
 
 
+# Theme used to render forum views. Default is 'obvi'.
+theme = 'obvi'
+
 # FOR WTForms
 
 
