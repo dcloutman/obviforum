@@ -22,7 +22,9 @@ import models
 
 @app.route('/')
 def index():
-	return render_template('index.tpl')
+	first_user = models.User.query.filter_by(is_admin = False).first()
+	return render_template('index.tpl', first_username = first_user.username)
+
 
 @app.route('/thread/<thread_id>')
 def view_thread(thread_id = None):
