@@ -36,9 +36,8 @@ theme = 'obvi'
 
 # FOR WTForms
 
-
-CSRF_ENABLED = True
+csrf_enabled = True
 
 # Make this something truly random. This will protect against malicious posts doing harm to your users.
-SECRET_KEY = ''
+secret_key = ''
 

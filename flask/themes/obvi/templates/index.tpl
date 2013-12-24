@@ -3,8 +3,11 @@
 {% block body_content %}
 	<h1>Welcome {{ first_username }}</h1>
 	<p>
-		At this point we are mocking up the un-styled look and feel of what we what the end functionality to be for a logged-in user.
+		Fashion axe Blue Bottle food truck, tofu dolor sustainable non chia ea. Authentic cillum viral proident, farm-to-table ethnic cray PBR&amp;B minim.
 	</p>
+	{% include '_flash.tpl' %}
+
+	{% if user_is_authenticated %}
 	<h2>Start a New Discussion</h2>
 	<form action="/thread/create" method="post">
 		<label for="new_thread_title">Thread Title</label><br />
@@ -13,6 +16,9 @@
 		<textarea class="post_content" id="new_thread_content" placeholder="The content of your post"></textarea><br />
 		<button class="post_submit" type="submit">Start New Thread</button>
 	</form>
+	{% else %}
+		{% include '_login.tpl' %}
+	{%endif %}
 
 	<h2>Current Discussions</h2>
 	<ul>

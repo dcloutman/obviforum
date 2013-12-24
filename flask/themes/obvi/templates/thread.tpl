@@ -45,11 +45,15 @@
 		</article>
 	</article>
 
-	<h2>Post Response</h2>
+	{% if user_is_authenticated %}
+	<h2>Post a Response</h2>
 	<form action="/thread/respond" method="post">
 		<label for="thread_response">Message</label><br />
 		<textarea class="post_content" id="thread_response"></textarea><br />
 		<button class="post_submit" type="submit">Post Response</button>
 	</form>
-
+	{% else %}
+		<h2>Login to Join the Conversation</h2>
+		{% include '_login.tpl' %}
+	{% endif %}
 {% endblock %}
