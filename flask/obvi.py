@@ -29,7 +29,8 @@ import models
 @app.route('/')
 def index():
 	user_is_authenticated = obvi_utilities.is_user_authenticated()
-	return render_template('index.tpl', user_is_authenticated=user_is_authenticated)
+	threads = models.Thread.query.order_by(models.Thread.time_started.desc())
+	return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads)
 
 
 @app.route('/thread/<thread_id>')

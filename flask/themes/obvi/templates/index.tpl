@@ -22,16 +22,9 @@
 
 	<h2>Current Discussions</h2>
 	<ul>
-		<li><a href="/thread/1">Thread 1</a></li>
-		<li><a href="/thread/2">Thread 2</a></li>
-		<li><a href="/thread/3">Thread 3</a></li>
-		<li><a href="/thread/4">Thread 4</a></li>
-		<li><a href="/thread/5">Thread 5</a></li>
-		<li><a href="/thread/6">Thread 6</a></li>
-		<li><a href="/thread/7">Thread 7</a></li>
-		<li><a href="/thread/8">Thread 8</a></li>
-		<li><a href="/thread/9">Thread 9</a></li>
-		<li><a href="/thread/10">Thread 10</a></li>
+	{% for thread in threads %}	
+		<li><a href="/thread/{{ thread.thread_id }}">{{ thread.subject }}</a> <strong>Started by</strong> {{ thread.originator_user_id }} <strong>on</strong> <time>{{ thread.time_started }}</time></li>
+	{% endfor %}
 	</ul>
 
 {% endblock %}
