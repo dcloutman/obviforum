@@ -8,6 +8,7 @@
 	</head>
 	<body>
 		<div id="outer">
+			{% include "_nav.tpl" %}
 			{% block body_content %}{% endblock %}
 			<div class="clear"></div>
 		</div>

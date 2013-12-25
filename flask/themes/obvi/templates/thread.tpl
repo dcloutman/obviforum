@@ -1,9 +1,6 @@
 {% extends "__layout.tpl" %}
 {% block title %}{{ thread_subject }}{% endblock %}
 {% block body_content %}
-	<nav>
-		<a href="/">Home</a>
-	</nav>
 	<article>
 		<header>
 			<h1>{{ thread_subject }}</h1>

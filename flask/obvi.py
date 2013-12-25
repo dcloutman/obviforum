@@ -8,6 +8,7 @@ License: MIT
 from flask import Flask, url_for, render_template, flash, redirect, request, session
 from flask.ext.sqlalchemy import SQLAlchemy
 import ObviConfig as obvi_config
+import obvi_utilities as obvi_utilities
 
 template_folder = "themes/{0}/templates".format(obvi_config.theme)
 static_folder = "themes/{0}/static".format(obvi_config.theme)
@@ -27,14 +28,14 @@ import models
 
 @app.route('/')
 def index():
-	user_is_authenticated = is_user_authenticated()
+	user_is_authenticated = obvi_utilities.is_user_authenticated()
 	return render_template('index.tpl', user_is_authenticated=user_is_authenticated)
 
 
 @app.route('/thread/<thread_id>')
 def view_thread(thread_id = None):
 	thread_subject = "Thread #{0} Topic".format(thread_id)
-	user_is_authenticated = is_user_authenticated()
+	user_is_authenticated = obvi_utilities.is_user_authenticated()
 	return render_template('thread.tpl', thread_subject=thread_subject, user_is_authenticated=user_is_authenticated)
 
 
@@ -63,41 +64,13 @@ def login():
 
 	# Method is either GET or the user did supply valid credintials.
 
-	return render_template('login.tpl', user_is_authenticated=is_user_authenticated());
+	return render_template('login.tpl', user_is_authenticated=obvi_utilities.is_user_authenticated());
 
 
 @app.route('/logout')
 def logout():
 	session.pop('user_id', None)
 	return redirect(url_for('index'))
-
-
-"""
-****************** HELPER FUNCTIONS ********************
-"""
-
-
-"""
-This function should be called at the beginning of any route that requires user authentication.
-"""
-def require_authentication():
-	if 'user_id' in session:
-		# Return a user object for the user identified by user_id.
-		return model.User.query.filter_by(user_id=session['user_id']).first()
-	else:
-		# User is not logged in. Forward them to the login page.
-		redirect(url_for('login'))
-
-
-"""
-This function may be called to determine program behavior based on the user's authentication state.
-"""
-def is_user_authenticated():
-	if 'user_id' in session:
-		return True
-	else:
-		return False
-
 
 
 # Runs the application if called from the command line. 
