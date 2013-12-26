@@ -29,15 +29,19 @@ import models
 @app.route('/')
 def index():
 	user_is_authenticated = obvi_utilities.is_user_authenticated()
-	threads = models.Thread.query.order_by(models.Thread.time_started.desc())
+	threads = models.Thread.query.join(models.User, models.Thread.originator_user_id==models.User.user_id).order_by(models.Thread.time_started.desc())
 	return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads)
 
 
 @app.route('/thread/<thread_id>')
 def view_thread(thread_id = None):
-	thread_subject = "Thread #{0} Topic".format(thread_id)
 	user_is_authenticated = obvi_utilities.is_user_authenticated()
-	return render_template('thread.tpl', thread_subject=thread_subject, user_is_authenticated=user_is_authenticated)
+	thread = models.Thread.query.filter_by(thread_id=thread_id).first()
+
+	if thread:
+		posts = models.Post.query.filter_by(thread_id=thread.thread_id).join(models.User, models.User.user_id==models.Post.user_id).order_by(models.Post.post_datetime)
+
+	return render_template('thread.tpl', thread=thread, user_is_authenticated=user_is_authenticated, posts=posts)
 
 
 @app.route('/login', methods=['POST', 'GET'])

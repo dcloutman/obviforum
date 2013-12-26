@@ -23,7 +23,7 @@
 	<h2>Current Discussions</h2>
 	<ul>
 	{% for thread in threads %}	
-		<li><a href="/thread/{{ thread.thread_id }}">{{ thread.subject }}</a> <strong>Started by</strong> {{ thread.originator_user_id }} <strong>on</strong> <time>{{ thread.time_started }}</time></li>
+		<li><a href="/thread/{{ thread.thread_id }}">{{ thread.subject }}</a> <strong>Started by</strong> {{ thread.originator.username }} <strong>on</strong> <time>{{ thread.time_started }}</time></li>
 	{% endfor %}
 	</ul>
 
