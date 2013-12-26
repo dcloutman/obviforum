@@ -28,20 +28,28 @@ import models
 
 @app.route('/')
 def index():
+	authenticated_user = None
 	user_is_authenticated = obvi_utilities.is_user_authenticated()
+	if user_is_authenticated:
+		authenticated_user = obvi_utilities.get_authenticated_user()
+
 	threads = models.Thread.query.join(models.User, models.Thread.originator_user_id==models.User.user_id).order_by(models.Thread.time_started.desc())
-	return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads, welcome_text=obvi_config.welcome_text)
+	return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads, authenticated_user=authenticated_user, welcome_text=obvi_config.welcome_text)
 
 
 @app.route('/thread/<thread_id>')
 def view_thread(thread_id = None):
+	authenticated_user = None
 	user_is_authenticated = obvi_utilities.is_user_authenticated()
+	if user_is_authenticated:
+		authenticated_user = obvi_utilities.get_authenticated_user()
+
 	thread = models.Thread.query.filter_by(thread_id=thread_id).first()
 
 	if thread:
 		posts = models.Post.query.filter_by(thread_id=thread.thread_id).join(models.User, models.User.user_id==models.Post.user_id).order_by(models.Post.post_datetime)
 
-	return render_template('thread.tpl', thread=thread, user_is_authenticated=user_is_authenticated, posts=posts)
+	return render_template('thread.tpl', thread=thread, user_is_authenticated=user_is_authenticated, authenticated_user=authenticated_user, posts=posts)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -68,8 +76,12 @@ def login():
 		#	flash('Invalid login.')
 
 	# Method is either GET or the user did supply valid credintials.
+	authenticated_user = None
+	user_is_authenticated = obvi_utilities.is_user_authenticated()
+	if user_is_authenticated:
+		authenticated_user = obvi_utilities.get_authenticated_user()
 
-	return render_template('login.tpl', user_is_authenticated=obvi_utilities.is_user_authenticated());
+	return render_template('login.tpl', user_is_authenticated=user_is_authenticated, authenticated_user=authenticated_user);
 
 
 @app.route('/logout')

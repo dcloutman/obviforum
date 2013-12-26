@@ -1,8 +1,8 @@
 <nav>
 	<a href="/">Home</a>
-	{% if user_is_authorized %}
-	<a href="/login">Login</a>
+	{% if user_is_authenticated %}
+	Welcome {{ authenticated_user.username }}! <a href="/logout">Logout</a>
 	{% else %}
-	<a href="/logout">Logout</a>
+	<a href="/login">Login</a>
 	{% endif %}
 </nav>
