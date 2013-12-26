@@ -24,6 +24,26 @@ h1, h2, h3, h4, h5, h6, form {
 	margin: 0;
 }
 
+.float-right {
+	float: right;
+}
+
+.float-left {
+	float: left;
+}
+
+.text-align-right {
+	text-align: right;
+}
+
+.text-alignt-left {
+	text-align: left;
+}
+
 div.clear {
 	clear: both;
+}
+
+div.navigation-column {
+	width: 50%;
 }
