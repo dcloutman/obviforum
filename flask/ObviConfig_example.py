@@ -34,6 +34,11 @@ user_password_salt = ''
 # Theme used to render forum views. Default is 'obvi'.
 theme = 'obvi'
 
+# Welcome text displays on the homepage. You can customize this to be whatever you want.
+welcome_text = """
+Welcome to ObviForum, a simple Web forum solution. 
+"""
+
 # FOR WTForms
 
 csrf_enabled = True

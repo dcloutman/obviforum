@@ -3,7 +3,7 @@
 {% block body_content %}
 	<h1>Welcome {{ first_username }}</h1>
 	<p>
-		Fashion axe Blue Bottle food truck, tofu dolor sustainable non chia ea. Authentic cillum viral proident, farm-to-table ethnic cray PBR&amp;B minim.
+		{{ welcome_text }}
 	</p>
 	{% include '_flash.tpl' %}
 
@@ -18,7 +18,7 @@
 	</form>
 	{% else %}
 		{% include '_login.tpl' %}
-	{%endif %}
+	{% endif %}
 
 	<h2>Current Discussions</h2>
 	<ul>

@@ -30,7 +30,7 @@ import models
 def index():
 	user_is_authenticated = obvi_utilities.is_user_authenticated()
 	threads = models.Thread.query.join(models.User, models.Thread.originator_user_id==models.User.user_id).order_by(models.Thread.time_started.desc())
-	return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads)
+	return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads, welcome_text=obvi_config.welcome_text)
 
 
 @app.route('/thread/<thread_id>')
