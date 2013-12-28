@@ -11,9 +11,9 @@
 	<h2>Start a New Discussion</h2>
 	<form action="/thread/create" method="post">
 		<label for="new_thread_title">Thread Title</label><br />
-		<input id="new_thread_title" class="post_title" type="text" placeholder="Subject of new thread" /><br />
+		<input id="new_thread_title" name="new_thread_title" class="post_title" type="text" placeholder="Subject of new thread" /><br />
 		<label for="new_thread_content">Message</label><br />
-		<textarea class="post_content" id="new_thread_content" placeholder="The content of your post"></textarea><br />
+		<textarea class="post_content" id="new_thread_content" name="post_content" placeholder="The content of your post"></textarea><br />
 		<button class="post_submit" type="submit">Start New Thread</button>
 	</form>
 	{% else %}

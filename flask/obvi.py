@@ -17,6 +17,7 @@ static_folder = "themes/{0}/static".format(obvi_config.theme)
 app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://{0}:{1}@{2}/{3}".format(obvi_config.mysql_username, obvi_config.mysql_password, obvi_config.mysql_host, obvi_config.mysql_database)
 app.config['SECRET_KEY'] = obvi_config.secret_key
+
 db = SQLAlchemy(app)
 
 # Enable debug mode if configured.
@@ -50,6 +51,27 @@ def view_thread(thread_id = None):
 		posts = models.Post.query.filter_by(thread_id=thread.thread_id).join(models.User, models.User.user_id==models.Post.user_id).order_by(models.Post.post_datetime)
 
 	return render_template('thread.tpl', thread=thread, user_is_authenticated=user_is_authenticated, authenticated_user=authenticated_user, posts=posts)
+
+
+@app.route('/thread/create', methods=['POST'])
+def create_thread():
+	authenticated_user = obvi_utilities.require_authentication()
+
+	db.session.commit()
+	if authenticated_user:
+		try:
+			new_thread = models.Thread(request.form['new_thread_title'], originator_user_id = authenticated_user.user_id)
+			first_post = models.Post(new_thread, request.form['post_content'], user_id = authenticated_user.user_id )
+
+			db.session.add(new_thread)
+			db.session.add(first_post)
+			db.session.commit()
+			flash("Your post was saved.")
+			return redirect(url_for('index'))
+		except:
+			db.session.rollback()
+			flash("Your post could not be saved.")
+			return redirect(url_for('index'))
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -88,6 +110,16 @@ def login():
 def logout():
 	session.pop('user_id', None)
 	return redirect(url_for('index'))
+
+
+@app.teardown_request
+def teardown_request(exception):
+	if db is not None:
+		db.session.close()
+
+@app.teardown_appcontext
+def shutdown_session(response):
+	db.session.remove()
 
 
 # Runs the application if called from the command line. 

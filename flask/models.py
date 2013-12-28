@@ -47,12 +47,15 @@ class Thread(db.Model):
 	# Object members for one-many relationships
 	originator = db.relationship('User', backref = db.backref('Threads', lazy='dynamic'))
 
-	def __init__ (self, subject, originator, time_started = None):
+	def __init__ (self, subject, originator = None, originator_user_id = None, time_started = None):
 		self.subject = subject
 		if time_started is None:
 			self.time_started = datetime.now()
 		else:
 			self.time_started = time_started
+
+		if originator_user_id is not None:
+			self.originator_user_id = originator_user_id
 
 		self.originator = originator
 
@@ -75,7 +78,7 @@ class Post(db.Model):
 	thread = db.relationship('Thread', backref = db.backref('Posts', lazy = 'dynamic'))
 	user = db.relationship('User', backref = db.backref('Posts', lazy = 'dynamic'))
 
-	def __init__ (self, thread, user, post_message, post_datetime = None):
+	def __init__ (self, thread, post_message, user = None, user_id = None, post_datetime = None):
 		self.thread = thread
 		self.user = user
 		self.post_message = post_message
@@ -84,6 +87,8 @@ class Post(db.Model):
 		else:
 			self.post_datetime = post_datetime
 
+		if user_id is not None:
+			self.user_id = user_id
 
 	def __repr__ (self):
 		return '<Post {0}: {1}>'.format(self.post_id, self.thread_id)
