@@ -1,7 +1,7 @@
 # This module contains utility functions.
 from flask import session, redirect
 import models
-
+from obvi import db
 
 """
 This function should be called at the beginning of any route that requires user authentication.
@@ -19,7 +19,7 @@ Returns all data for the currently authenticated user.
 """
 def get_authenticated_user():
 	return models.User.query.filter_by(user_id=session['user_id']).first()
-
+	
 """
 This function may be called to determine program behavior based on the user's authentication state.
 """

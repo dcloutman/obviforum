@@ -18,7 +18,7 @@ app = Flask(__name__, template_folder=template_folder, static_folder=static_fold
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://{0}:{1}@{2}/{3}".format(obvi_config.mysql_username, obvi_config.mysql_password, obvi_config.mysql_host, obvi_config.mysql_database)
 app.config['SECRET_KEY'] = obvi_config.secret_key
 
-db = SQLAlchemy(app)
+db = SQLAlchemy(app, session_options={'autoflush':True})
 
 # Enable debug mode if configured.
 if obvi_config.debug_mode:
@@ -34,7 +34,7 @@ def index():
 	if user_is_authenticated:
 		authenticated_user = obvi_utilities.get_authenticated_user()
 
-	threads = models.Thread.query.join(models.User, models.Thread.originator_user_id==models.User.user_id).order_by(models.Thread.time_started.desc())
+	threads = models.Thread.query.join(models.User, models.Thread.originator_user_id==models.User.user_id).order_by(models.Thread.time_started.desc()).all()
 	return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads, authenticated_user=authenticated_user, welcome_text=obvi_config.welcome_text)
 
 
@@ -115,11 +115,12 @@ def logout():
 @app.teardown_request
 def teardown_request(exception):
 	if db is not None:
-		db.session.close()
+		db.session.close_all()
 
 @app.teardown_appcontext
 def shutdown_session(response):
-	db.session.remove()
+	if db is not None:
+		db.session.close_all()
 
 
 # Runs the application if called from the command line. 
