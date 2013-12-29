@@ -5,6 +5,7 @@
 		<header>
 			<h1>{{ thread.subject }}</h1>
 		</header>
+	{% include '_flash.tpl' %}
 
 	{% for post in posts %}
 		<article>

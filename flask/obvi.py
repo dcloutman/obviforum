@@ -65,11 +65,11 @@ def create_thread():
 			db.session.add(new_thread)
 			db.session.add(first_post)
 			db.session.commit()
-			flash("Your post created a new thread.")
+			flash("Your post created a new thread.", 'success')
 			return redirect(url_for('index'))
 		except:
 			db.session.rollback()
-			flash("Your post could not be saved.")
+			flash("Your post could not be saved.", 'error')
 			return redirect(url_for('index'))
 	else:
 		return redirect(url_for('login'))
@@ -80,22 +80,22 @@ def add_post_to_thread():
 	authenticated_user = obvi_utilities.require_authentication()
 
 	if authenticated_user:
-		#try:
+		try:
 			current_thread = models.Thread.query.filter_by(thread_id=request.form['thread_id']).first()
 			if current_thread:
 				new_post = models.Post(request.form['post_content'], thread_id = current_thread.thread_id, user_id=authenticated_user.user_id)
 
 				db.session.add(new_post)
 				db.session.commit()
-				flash("Your post was added to the thread.")
+				flash("Your post was added to the thread.", 'success')
 				return redirect("/thread/{0}".format(request.form['thread_id']))
 			else:
-				flash("Bad thread id.")
+				flash("Bad thread id.", 'error')
 				return redirect(url_for('index'))
-		#except:
-		#	db.session.rollback()
-		#	flash("Your post could not be saved.")
-		#	return redirect("/thread/{0}".format(request.form['thread_id']))
+		except:
+			db.session.rollback()
+			flash("Your post could not be saved.", 'error')
+			return redirect("/thread/{0}".format(request.form['thread_id']))
 	else:
 		return redirect(url_for('login'))
 
@@ -108,20 +108,20 @@ def login():
 		try:
 			validated_user = models.User.query.filter_by(username=request.form['username'], password=hashed_password).first()
 		except:
-			flash("Could not query user.")
+			flash("Could not query user.", 'error')
 		finally:
 			if validated_user is not None:
 				session['user_id'] = validated_user.user_id
-				flash("Login was successful!")
+				flash("Login was successful!", 'success')
 				return redirect(url_for('index'))
 			else:
-				flash("Login failed. You supplied invalid credintials.")
+				flash("Login failed. You supplied invalid credintials.", 'warning')
 
 		# On success.
 		#if True:
 		#	return redirect(url_for('index'))
 		#else:
-		#	flash('Invalid login.')
+		#	flash('Invalid login.', 'warning')
 
 	# Method is either GET or the user did supply valid credintials.
 	authenticated_user = None

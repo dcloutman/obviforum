@@ -47,3 +47,15 @@ div.clear {
 div.navigation-column {
 	width: 50%;
 }
+
+ul.flashes li.success {
+	background-color: #6AFC62;
+}
+
+ul.flashes li.warning {
+	background-color: #EBEB1C;
+}
+
+ul.flashes li.error {
+	background-color: #FC6A62;
+}
