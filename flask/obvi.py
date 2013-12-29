@@ -57,21 +57,47 @@ def view_thread(thread_id = None):
 def create_thread():
 	authenticated_user = obvi_utilities.require_authentication()
 
-	db.session.commit()
 	if authenticated_user:
 		try:
 			new_thread = models.Thread(request.form['new_thread_title'], originator_user_id = authenticated_user.user_id)
-			first_post = models.Post(new_thread, request.form['post_content'], user_id = authenticated_user.user_id )
+			first_post = models.Post(request.form['post_content'], thread = new_thread, user_id = authenticated_user.user_id )
 
 			db.session.add(new_thread)
 			db.session.add(first_post)
 			db.session.commit()
-			flash("Your post was saved.")
+			flash("Your post created a new thread.")
 			return redirect(url_for('index'))
 		except:
 			db.session.rollback()
 			flash("Your post could not be saved.")
 			return redirect(url_for('index'))
+	else:
+		return redirect(url_for('login'))
+
+
+@app.route('/thread/respond', methods=['POST'])
+def add_post_to_thread():
+	authenticated_user = obvi_utilities.require_authentication()
+
+	if authenticated_user:
+		#try:
+			current_thread = models.Thread.query.filter_by(thread_id=request.form['thread_id']).first()
+			if current_thread:
+				new_post = models.Post(request.form['post_content'], thread_id = current_thread.thread_id, user_id=authenticated_user.user_id)
+
+				db.session.add(new_post)
+				db.session.commit()
+				flash("Your post was added to the thread.")
+				return redirect("/thread/{0}".format(request.form['thread_id']))
+			else:
+				flash("Bad thread id.")
+				return redirect(url_for('index'))
+		#except:
+		#	db.session.rollback()
+		#	flash("Your post could not be saved.")
+		#	return redirect("/thread/{0}".format(request.form['thread_id']))
+	else:
+		return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['POST', 'GET'])

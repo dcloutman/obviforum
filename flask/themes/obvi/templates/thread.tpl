@@ -21,8 +21,9 @@
 	{% if user_is_authenticated %}
 	<h2>Post a Response</h2>
 	<form action="/thread/respond" method="post">
+		<input type="hidden" name="thread_id" value="{{ thread.thread_id }}" /> 
 		<label for="thread_response">Message</label><br />
-		<textarea class="post_content" id="thread_response"></textarea><br />
+		<textarea class="post_content" id="thread_response" name="post_content"></textarea><br />
 		<button class="post_submit" type="submit">Post Response</button>
 	</form>
 	{% else %}

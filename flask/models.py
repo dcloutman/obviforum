@@ -78,8 +78,9 @@ class Post(db.Model):
 	thread = db.relationship('Thread', backref = db.backref('Posts', lazy = 'dynamic'))
 	user = db.relationship('User', backref = db.backref('Posts', lazy = 'dynamic'))
 
-	def __init__ (self, thread, post_message, user = None, user_id = None, post_datetime = None):
+	def __init__ (self, post_message, thread=None, thread_id=None, user = None, user_id = None, post_datetime = None):
 		self.thread = thread
+		self.thread_id = thread_id
 		self.user = user
 		self.post_message = post_message
 		if post_datetime is None:
