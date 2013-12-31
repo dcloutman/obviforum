@@ -1,0 +1,60 @@
+RELEASE NOTES:
+
+WARNING: THIS IS PRE-RELEASE SOFTWARE. IT WILL NOT WORK WITHOUT SIGNIFICANT EFFORT
+ON YOUR PART. NOT ALL FEATURES HAVE BEEN IMPLEMENTED.
+
+Currently the master branch is being used for day to day development. Everything
+in this repository is a work in progress. Not everything has been thoroughly 
+tested and if you try and use this in production, you will have problems.
+
+This software does not yet have a release number. That should tell you something.
+
+FUTURE PLANS:
+
+The author is serious about getting this project into a working state, and ObviFoum
+is on the way to release 0.0.1. Plans are as follows:
+
+
+Release 0.0.1 - Q1 2014
+
+The goal of this release is to have a demo-able, minimal viable product. This 
+release should be secure enough to use in a light production environment, but it
+will lack many of the features on might like to have in a Web forum. Deployment
+of this version in a production environment will be actively discouraged and 
+users should be warned that v0.0.1 will absolutely not be forward compatible with
+any future release and there will be no upgrade path. No security releases patches
+will be provided, so if you use this version, be prepared to fork it. No support
+will be given, but individuals interested in contributing code to the project 
+may be given the opportunity to do so.
+
+
+Release 0.0.2 - Q2 2014
+
+This release will not be backward compatible with the database from v0.0.1, and 
+no upgrade path will be available. However, future it is anticipated that upgrade
+paths from this version to future versions will be available. The most noteworthy
+new feature of this release will be the creation of topic specific boards, which 
+will replace threads on the home page. The new hierarchy will be boards->threads->
+posts.
+
+ObviForum support should become self-hosting with this release.
+
+
+Release 0.0.3, Release 0.0.4, and Release 0.0.5
+
+These releases will include smaller product enhancements, leading up to a truly
+feature-rich, production worthy open-source Web Forum.
+
+
+Release 0.1.0
+
+ObviForums will be production worthy at this point and will be actively promoted
+as a Web-forum solution. User feedback will be gathered and intermediate releases
+will be planned to fix bugs and add critical feature enhancements from the community.
+
+
+Release 1.0.0
+
+After implementing community feedback, ObviForum will be promoted as a hardened,
+mainstream community Web forum platform. Broader community participation will
+be solicited and commercial support may become available.
