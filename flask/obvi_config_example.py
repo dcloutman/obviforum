@@ -1,6 +1,6 @@
 """
 ObviForums CONFIGURATION FILE
--- Copy this file to ObviConfig.py, remove this line, and below, change the values to match your environment. ---
+-- Copy this file to obvi_config.py, remove this line, and below, change the values to match your environment. ---
 Author: David Cloutman
 License: MIT
 """

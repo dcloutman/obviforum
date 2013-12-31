@@ -7,7 +7,7 @@ License: MIT
 
 from flask import Flask, url_for, render_template, flash, redirect, request, session
 from flask.ext.sqlalchemy import SQLAlchemy
-import ObviConfig as obvi_config
+import obvi_config as obvi_config
 import obvi_utilities as obvi_utilities
 
 template_folder = "themes/{0}/templates".format(obvi_config.theme)
