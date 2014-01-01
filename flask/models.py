@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from obvi import db
 from obvi import obvi_config
 from datetime import datetime
