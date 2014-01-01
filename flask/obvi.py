@@ -139,6 +139,11 @@ def logout():
 	session.pop('user_id', None)
 	return redirect(request.referrer)
 
+# Routes to the terms of service page.
+@app.route('/tos')
+def tos():
+	return render_template('tos.tpl')
+
 
 @app.teardown_request
 def teardown_request(exception):
