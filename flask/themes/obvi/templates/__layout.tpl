@@ -8,7 +8,10 @@
 		{% include '_javascript_before_opening_body.tpl' %}
 		<div id="outer">
 			{% include "_nav.tpl" %}
-			{% block body_content %}{% endblock %}
+			<div id="body_content_container">
+				{% block body_content %}{% endblock %}
+				<div class="clear"></div>
+			</div>
 			{% include "_footer.tpl" %}
 			<div class="clear"></div>
 		</div>
