@@ -5,7 +5,7 @@ Author: David Cloutman
 License: MIT
 """
 
-from flask import Flask, url_for, render_template, flash, redirect, request, session
+from flask import Flask, url_for, render_template, flash, redirect, request, session, abort
 from flask.ext.sqlalchemy import SQLAlchemy
 import obvi_config as obvi_config
 import obvi_utilities as obvi_utilities
@@ -42,18 +42,22 @@ def index():
 
 @app.route('/thread/<thread_id>')
 def view_thread(thread_id = None):
-	authenticated_user = None
-	user_is_authenticated = obvi_utilities.is_user_authenticated()
-	if user_is_authenticated:
-		authenticated_user = obvi_utilities.get_authenticated_user()
 
 	thread = models.Thread.query.filter_by(thread_id=thread_id).first()
 
 	if thread:
 		posts = models.Post.query.filter_by(thread_id=thread.thread_id).join(models.User, models.User.user_id==models.Post.user_id).order_by(models.Post.post_datetime)
 
-	return render_template('thread.tpl', thread=thread, user_is_authenticated=user_is_authenticated, authenticated_user=authenticated_user, posts=posts, login_form=forms.LoginForm())
-
+		authenticated_user = None
+		user_is_authenticated = obvi_utilities.is_user_authenticated()
+		if user_is_authenticated:
+			authenticated_user = obvi_utilities.get_authenticated_user()
+			response_form = forms.RespondToPostForm(thread_id=thread_id)
+			return render_template('thread.tpl', thread=thread, user_is_authenticated=user_is_authenticated, authenticated_user=authenticated_user, posts=posts, response_form=response_form)
+		else:
+			return render_template('thread.tpl', thread=thread, user_is_authenticated=user_is_authenticated, authenticated_user=authenticated_user, posts=posts, login_form=forms.LoginForm())
+	else:
+		abort(404) 
 
 @app.route('/thread/create', methods=['POST'])
 def create_thread():
@@ -144,6 +148,10 @@ def logout():
 def tos():
 	return render_template('tos.tpl')
 
+
+@app.errorhandler(404)
+def page_not_found(error):
+	return render_template('404.tpl'), 404
 
 @app.teardown_request
 def teardown_request(exception):

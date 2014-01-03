@@ -22,9 +22,10 @@
 	{% if user_is_authenticated %}
 	<h2>Post a Response</h2>
 	<form action="/thread/respond" method="post">
-		<input type="hidden" name="thread_id" value="{{ thread.thread_id }}" /> 
-		<label for="thread_response">Message</label><br />
-		<textarea class="post_content" id="thread_response" name="post_content"></textarea><br />
+		{{ response_form.hidden_tag() }}
+		{{ response_form.thread_id }} 
+		{{ response_form.post_content.label }}<br />
+		{{ response_form.post_content }}<br />
 		<button class="post_submit" type="submit">Post Response</button>
 	</form>
 	{% else %}
