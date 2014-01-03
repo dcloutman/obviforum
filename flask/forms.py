@@ -8,7 +8,8 @@ class LoginForm (Form):
 	password = PasswordField(label='Password', id='login_form_password', validators=[validators.required(), validators.length(min=1, max=128)])
 
 class CreateThreadForm (Form):
-	pass
+	new_thread_title = StringField(label='Thread Title', id='new_thread_title', validators=[validators.required(), validators.length(min=1, max=128)])
+	post_content = TextAreaField(label='Message', id='new_thread_content', validators=[validators.required(), validators.length(min=1, max=102400)])
 
 class RespondToPostForm (Form):
 	thread_id = HiddenField(validators=[validators.NumberRange(min=1)])

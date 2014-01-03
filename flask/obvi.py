@@ -31,13 +31,16 @@ import models
 
 @app.route('/')
 def index():
+	threads = models.Thread.query.join(models.User, models.Thread.originator_user_id==models.User.user_id).order_by(models.Thread.time_started.desc()).all()
+
 	authenticated_user = None
 	user_is_authenticated = obvi_utilities.is_user_authenticated()
 	if user_is_authenticated:
 		authenticated_user = obvi_utilities.get_authenticated_user()
-
-	threads = models.Thread.query.join(models.User, models.Thread.originator_user_id==models.User.user_id).order_by(models.Thread.time_started.desc()).all()
-	return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads, authenticated_user=authenticated_user, welcome_text=obvi_config.welcome_text, login_form=forms.LoginForm())
+		thread_create_form = forms.CreateThreadForm()
+		return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads, authenticated_user=authenticated_user, welcome_text=obvi_config.welcome_text, thread_create_form=thread_create_form)
+	else:
+		return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads, welcome_text=obvi_config.welcome_text, login_form=forms.LoginForm())
 
 
 @app.route('/thread/<thread_id>')
@@ -55,7 +58,7 @@ def view_thread(thread_id = None):
 			response_form = forms.RespondToPostForm(thread_id=thread_id)
 			return render_template('thread.tpl', thread=thread, user_is_authenticated=user_is_authenticated, authenticated_user=authenticated_user, posts=posts, response_form=response_form)
 		else:
-			return render_template('thread.tpl', thread=thread, user_is_authenticated=user_is_authenticated, authenticated_user=authenticated_user, posts=posts, login_form=forms.LoginForm())
+			return render_template('thread.tpl', thread=thread, user_is_authenticated=user_is_authenticated, posts=posts, login_form=forms.LoginForm())
 	else:
 		abort(404) 
 

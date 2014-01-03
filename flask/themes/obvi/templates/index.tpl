@@ -10,10 +10,11 @@
 	{% if user_is_authenticated %}
 	<h2>Start a New Discussion</h2>
 	<form action="/thread/create" method="post">
-		<label for="new_thread_title">Thread Title</label><br />
-		<input id="new_thread_title" name="new_thread_title" class="post_title" type="text" placeholder="Subject of new thread" /><br />
-		<label for="new_thread_content">Message</label><br />
-		<textarea class="post_content" id="new_thread_content" name="post_content" placeholder="The content of your post"></textarea><br />
+		{{ thread_create_form.hidden_tag() }}
+		{{ thread_create_form.new_thread_title.label }}<br />
+		{{ thread_create_form.new_thread_title(placeholder='Subject of new thread') }}<br />
+		{{ thread_create_form.post_content.label }}<br />
+		{{ thread_create_form.post_content(placeholder='The content of your post') }}<br />
 		<button class="post_submit" type="submit">Start New Thread</button>
 	</form>
 	{% else %}
