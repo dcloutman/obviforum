@@ -8,13 +8,13 @@
 	{% include '_flash.tpl' %}
 
 	{% for post in posts %}
-		<article>
+		<article class="thread-container">
 			<header>
 				<strong>{{ post.user.username }}</strong> <time datetime="2013-12-02">{{ post.post_datetime }}</time>
 			</header>
-			<p>
+			<div class="post-body">
 				{{ post.post_message }}
-			</p>
+			</div>
 		</article>
 	{% endfor %}
 	</article>
