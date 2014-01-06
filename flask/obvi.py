@@ -146,6 +146,49 @@ def logout():
 	session.pop('user_id', None)
 	return redirect(request.referrer)
 
+@app.route('/signup')
+def signup ():
+	user_is_authenticated = obvi_utilities.is_user_authenticated()
+	if user_is_authenticated:
+		# Authenticated users should not be accessing this page.
+		return redirect(url_for('index'))
+	else:
+		return render_template('signup.tpl', signup_form=forms.SignupForm())
+
+
+# Add a new user to the system from the signup page
+@app.route('/user/create', methods=['POST'])
+def create_user_from_signup ():
+	user_is_authenticated = obvi_utilities.is_user_authenticated()
+	if user_is_authenticated:
+		flash("An authenticated user cannot create a new account.")
+		abort(404)
+	else:
+		signup_form = forms.SignupForm()
+		if signup_form.validate_on_submit():
+			try:
+				username = request.form['username'].lower()
+
+				new_user = models.User(username=username, password=request.form['password'], email=request.form['email'], is_admin=False)
+				db.session.add(new_user)
+				db.session.commit()
+				flash("Your account has been created. Welcome!", 'success')
+
+				# This effectively logs in the new user.
+				hashed_password = models.User.hash_password(request.form['password'])
+				validated_user = models.User.query.filter_by(username=request.form['username'], password=hashed_password).first()
+				session['user_id'] = validated_user.user_id
+
+			except:
+				db.session.rollback()
+				flash("Your new user account could not be saved.", 'warning')
+				return redirect(url_for('signup'))
+		else:
+			obvi_utilities.queue_form_errors_in_flash(signup_form)
+			return redirect(url_for('signup'))
+
+	return redirect(url_for('index'))
+
 # Routes to the terms of service page.
 @app.route('/tos')
 def tos():

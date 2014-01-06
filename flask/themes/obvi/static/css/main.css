@@ -63,6 +63,8 @@ html, body {
 	color: #ffffff;
 
 	padding: 15px 0;
+
+	font-size: 10px;
 }
 
 #outer nav a, 
@@ -142,4 +144,17 @@ article.thread-container header {
 
 article.thread-container .post-body {
 	padding: 5px;
+}
+
+table.form-table td {
+	border-bottom: 10px solid #ffffff;
+}
+
+td.field-description {
+	background-color: #A3F4F0;
+}
+
+label {
+	font-weight: bold;
+	margin-right: 10px;
 }

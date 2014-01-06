@@ -1,5 +1,5 @@
 # This module contains utility functions.
-from flask import session, redirect
+from flask import session, redirect, flash
 import models
 from obvi import db
 
@@ -29,4 +29,15 @@ def is_user_authenticated():
 	else:
 		return False
 
+"""
+Adds error messages from WTForm validation errors to flash messages.
+"""
+def queue_form_errors_in_flash (form):
+	for field, errors in form.errors.items():
+		for error in errors:
+			flash('<label for="%s">%s:</label> %s' % (
+				getattr(form, field).id,
+				getattr(form, field).label.text,
+				error
+			), 'error')
 

@@ -7,7 +7,7 @@
 	{% if user_is_authenticated %}
 		Welcome {{ authenticated_user.username }}! | <a href="/logout">Logout</a>
 	{% else %}
-		<a href="/user/create">Sign Up</a> | <a href="/login">Login</a>
+		<a href="/signup">Sign Up</a> | <a href="/login">Login</a>
 	{% endif %}
 	</div>
 
