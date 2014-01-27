@@ -8,7 +8,6 @@ License: MIT
 from flask import Flask, url_for, render_template, flash, redirect, request, session, abort
 from flask.ext.sqlalchemy import SQLAlchemy
 import obvi_config as obvi_config
-import obvi_utilities as obvi_utilities
 import forms
 
 template_folder = "themes/{0}/templates".format(obvi_config.theme)
@@ -26,7 +25,11 @@ db = SQLAlchemy(app, session_options={'autoflush':True})
 if obvi_config.debug_mode:
 	app.debug = True
 
+# models needs the db variable to be instantiated.
 import models
+# This needs to go here as there is a dependency in obvi_utilities on models, which needs 
+# obvi.db instantiated.
+import obvi_utilities as obvi_utilities
 
 
 @app.route('/')

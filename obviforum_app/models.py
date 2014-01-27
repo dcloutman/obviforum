@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from obvi import db
-from obvi import obvi_config
+import obvi_config
 from datetime import datetime
 from sqlalchemy.dialects import mysql
 import hashlib
