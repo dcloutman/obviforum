@@ -167,14 +167,14 @@ def signup ():
 def show_user_profile():
 	user_is_authenticated = obvi_utilities.is_user_authenticated()
 	if user_is_authenticated:
-		user = obvi_utilities.get_authenticated_user()
-		threads = models.Thread.query.filter_by(originator_user_id=user.user_id).all()
+		authenticated_user = obvi_utilities.get_authenticated_user()
+		threads = models.Thread.query.filter_by(originator_user_id=authenticated_user.user_id).all()
 
 		num_posts = '' # TODO: models.Post.query.(db.func.count(models.Post.user_id)).filter_by(user_id=user.user_id)
 		first_post_date = ''
 		most_recent_post_date = ''
 
-		return render_template('user.tpl', user=user, threads=threads, num_posts=num_posts, first_post_date=first_post_date, most_recent_post_date=most_recent_post_date)
+		return render_template('user.tpl', authenticated_user=authenticated_user, threads=threads, num_posts=num_posts, first_post_date=first_post_date, most_recent_post_date=most_recent_post_date, user_is_authenticated=user_is_authenticated)
 	else:
 		flash("You must be authenticated to view account information.")
 		abort(404)

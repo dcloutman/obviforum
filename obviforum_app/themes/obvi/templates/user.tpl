@@ -3,7 +3,7 @@
 {% block body_content %}
 	<article>
 		<header>
-			<h1>Profile for {{ user.username }}</h1>
+			<h1>Profile for {{ authenticated_user.username }}</h1>
 		</header>
 
 		<section>
