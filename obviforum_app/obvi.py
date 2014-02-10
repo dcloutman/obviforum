@@ -15,6 +15,11 @@ static_folder = "themes/{0}/static".format(obvi_config.theme)
 
 
 app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
+
+# Add custom filters
+import filters
+
+# Set up the database
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://{0}:{1}@{2}/{3}".format(obvi_config.mysql_username, obvi_config.mysql_password, obvi_config.mysql_host, obvi_config.mysql_database)
 app.config['SECRET_KEY'] = obvi_config.secret_key
 app.config['CSRF_ENABLED'] = obvi_config.csrf_enabled
@@ -159,12 +164,28 @@ def signup ():
 		return render_template('signup.tpl', signup_form=forms.SignupForm())
 
 
+@app.route('/user')
+def show_user_profile():
+	user_is_authenticated = obvi_utilities.is_user_authenticated()
+	if user_is_authenticated:
+		user = obvi_utilities.get_authenticated_user()
+		threads = models.Thread.query.filter_by(originator_user_id=user.user_id).all()
+
+		num_posts = '' # TODO: models.Post.query.(db.func.count(models.Post.user_id)).filter_by(user_id=user.user_id)
+		first_post_date = ''
+		most_recent_post_date = ''
+
+		return render_template('user.tpl', user=user, threads=threads, num_posts=num_posts, first_post_date=first_post_date, most_recent_post_date=most_recent_post_date)
+	else:
+		flash("You must be authenticated to view account information.")
+		abort(404)
+
 # Add a new user to the system from the signup page
 @app.route('/user/create', methods=['POST'])
 def create_user_from_signup ():
 	user_is_authenticated = obvi_utilities.is_user_authenticated()
 	if user_is_authenticated:
-		flash("An authenticated user cannot create a new account.")
+		flash("An authenticated user cannot create a new account.", 'error')
 		abort(404)
 	else:
 		signup_form = forms.SignupForm()

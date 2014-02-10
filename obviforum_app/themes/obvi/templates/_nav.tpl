@@ -5,7 +5,7 @@
 
 	<div class="navigation-column float-right text-align-right">
 	{% if user_is_authenticated %}
-		Welcome {{ authenticated_user.username }}! | <a href="/logout">Logout</a>
+		Welcome <a href="/user">{{ authenticated_user.username }}</a>! | <a href="/logout">Logout</a>
 	{% else %}
 		<a href="/signup">Sign Up</a> | <a href="/login">Login</a>
 	{% endif %}
