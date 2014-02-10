@@ -13,7 +13,7 @@
 				<strong>{{ post.user.username }}</strong> <time datetime="2013-12-02">{{ post.post_datetime }}</time>
 			</header>
 			<div class="post-body">
-				{{ post.post_message }}
+				{{ post.post_message | nl2br }}
 			</div>
 		</article>
 	{% endfor %}

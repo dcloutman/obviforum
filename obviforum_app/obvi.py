@@ -9,15 +9,14 @@ from flask import Flask, url_for, render_template, flash, redirect, request, ses
 from flask.ext.sqlalchemy import SQLAlchemy
 import obvi_config as obvi_config
 import forms
+import re # Regular expressions.
+from jinja2 import evalcontextfilter, Markup, escape
 
 template_folder = "themes/{0}/templates".format(obvi_config.theme)
 static_folder = "themes/{0}/static".format(obvi_config.theme)
 
 
 app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
-
-# Add custom filters
-import filters
 
 # Set up the database
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://{0}:{1}@{2}/{3}".format(obvi_config.mysql_username, obvi_config.mysql_password, obvi_config.mysql_host, obvi_config.mysql_database)
@@ -232,6 +231,29 @@ def teardown_request(exception):
 def shutdown_session(response):
 	if db is not None:
 		db.session.close_all()
+
+
+
+# Filter: nl2br
+# Slightly better than the eponymous nl2br() function from PHP. Wraps double new lines in <p /> tags, single
+# new line characters are converted to <br />. Modified from code found at: http://flask.pocoo.org/snippets/28/
+# by Dan Jacob.
+
+@app.template_filter()
+@evalcontextfilter
+def nl2br(eval_ctx, value):
+	paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
+	result = u'\n\n'.join(u'<p>%s</p>' % p.replace('\n', '<br />\n') \
+		for p in paragraph_re.split(escape(value)))
+	if eval_ctx.autoescape:
+		result = Markup(result)
+	return result
+
+
+####################
+
+# Add each custom filter to the Flask app.
+app.jinja_env.filters['nl2br'] = nl2br
 
 
 # Runs the application if called from the command line. 
