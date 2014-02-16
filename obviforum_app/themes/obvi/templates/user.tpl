@@ -5,30 +5,32 @@
 		<header>
 			<h1>Profile for {{ authenticated_user.username }}</h1>
 		</header>
+	{% include '_flash.tpl' %}
 
 		<section>
 			<header>
 				<h2>Statistics</h2>
 			</header>
-			<dl>
-				<dt>Number of Posts:</dt>
-				<dd>{{ num_posts }}</dd>
-				<dt>Most Recent Post Date:</dt>
-				<dt>{{ most_recent_post_date }}</dt>
-				<dt>First Post Date:</dt>
-				<dd>{{ first_post_date }}</dd>
-			</dl>
+
+			<strong>Number of Posts:</strong> {{ num_posts }}<br />
+			<strong>Most Recent Post Date:</strong> {{ most_recent_post_date }}<br />
+			<strong>First Post Date:</strong> {{ first_post_date }}<br />
 		</section>
 
 		<section>
 			<header>
 				<h2>Threads You Started</h2>
 			</header>
+	{% if threads %}
 			<ul>
-	{% for thread in threads %}	
+		{% for thread in threads %}	
 				<li><a href="/thread/{{ thread.thread_id }}">{{ thread.subject }}</a> <time>{{ thread.time_started }}</time></li>
-	{% endfor %}
+		{% endfor %}
 			</ul>
+	{% else %}
+		<em>You have not started any threads.</em> Start one now:
+		{% include '_new_thread_form.tpl' %}		
+	{% endif %}
 		</section>
 	</article>
 
