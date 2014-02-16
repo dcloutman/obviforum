@@ -13,8 +13,8 @@
 			</header>
 
 			<strong>Number of Posts:</strong> {{ num_posts }}<br />
-			<strong>Most Recent Post Date:</strong> {{ most_recent_post_date }}<br />
-			<strong>First Post Date:</strong> {{ first_post_date }}<br />
+			<strong>Most Recent Post Date:</strong> {{ most_recent_post_date | display_date }}<br />
+			<strong>First Post Date:</strong> {{ first_post_date | display_date }}<br />
 		</section>
 
 		<section>
@@ -24,7 +24,7 @@
 	{% if threads %}
 			<ul>
 		{% for thread in threads %}	
-				<li><a href="/thread/{{ thread.thread_id }}">{{ thread.subject }}</a> <time>{{ thread.time_started }}</time></li>
+				<li><a href="/thread/{{ thread.thread_id }}">{{ thread.subject }}</a> <time>{{ thread.time_started | display_date }}</time></li>
 		{% endfor %}
 			</ul>
 	{% else %}

@@ -10,7 +10,7 @@
 	{% for post in posts %}
 		<article class="thread-container">
 			<header>
-				<strong>{{ post.user.username }}</strong> <time datetime="2013-12-02">{{ post.post_datetime }}</time>
+				<strong>{{ post.user.username }}</strong> <time datetime="2013-12-02">{{ post.post_datetime | display_date }}</time>
 			</header>
 			<div class="post-body">
 				{{ post.post_message | nl2br }}

@@ -10,6 +10,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import obvi_config as obvi_config
 import forms
 import re # Regular expressions.
+from datetime import datetime
 from jinja2 import evalcontextfilter, Markup, escape
 
 template_folder = "themes/{0}/templates".format(obvi_config.theme)
@@ -31,6 +32,7 @@ if obvi_config.debug_mode:
 
 # models needs the db variable to be instantiated.
 import models
+
 # This needs to go here as there is a dependency in obvi_utilities on models, which needs 
 # obvi.db instantiated.
 import obvi_utilities as obvi_utilities
@@ -243,13 +245,22 @@ def shutdown_session(response):
 
 @app.template_filter()
 @evalcontextfilter
-def nl2br(eval_ctx, value):
+def nl2br(eval_context, value):
 	paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
 	result = u'\n\n'.join(u'<p>%s</p>' % p.replace('\n', '<br />\n') \
 		for p in paragraph_re.split(escape(value)))
-	if eval_ctx.autoescape:
+	if eval_context.autoescape:
 		result = Markup(result)
 	return result
+
+
+# Filter: display_date
+# Renders MySQL dates in a human (or at least non-techie) readable format.
+@app.template_filter()
+@evalcontextfilter
+def display_date(eval_context, mysql_datetime):
+	value = mysql_datetime.strftime('%a. %b %d, %Y %I:%M%p')
+	return value
 
 
 ####################
