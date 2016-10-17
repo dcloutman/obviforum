@@ -1,4 +1,4 @@
-obviforum_app/obvi_config.py
+/obviforum/config.py
 *.pyc
 
 # This is a typical directory for the virtual environment.

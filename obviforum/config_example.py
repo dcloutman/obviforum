@@ -40,8 +40,12 @@ welcome_text = """
 Welcome to ObviForum, a simple Web forum solution. 
 """
 
-# FOR WTForms
 
+# FOR SQLAlchemy
+sqlalchemy_track_modifications = False
+
+
+# FOR WTForms
 csrf_enabled = True
 
 # Make this something truly random. This will protect against malicious posts doing harm to your users.

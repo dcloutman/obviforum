@@ -7,36 +7,36 @@ License: MIT
 
 from flask import Flask, url_for, render_template, flash, redirect, request, session, abort
 from flask_sqlalchemy import SQLAlchemy
-import obviforum_app.obvi_config as obvi_config
-import obviforum_app.forms as forms
+import obviforum.config as config
+import obviforum.forms as forms
 import re # Regular expressions.
 from datetime import datetime
 from jinja2 import evalcontextfilter, Markup, escape
 
-template_folder = "themes/{0}/templates".format(obvi_config.theme)
-static_folder = "themes/{0}/static".format(obvi_config.theme)
+template_folder = "themes/{0}/templates".format(config.theme)
+static_folder = "themes/{0}/static".format(config.theme)
 
 
 app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
 
 # Set up the database
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://{0}:{1}@{2}/{3}".format(obvi_config.mysql_username, obvi_config.mysql_password, obvi_config.mysql_host, obvi_config.mysql_database)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SECRET_KEY'] = obvi_config.secret_key
-app.config['CSRF_ENABLED'] = obvi_config.csrf_enabled
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://{0}:{1}@{2}/{3}".format(config.mysql_username, config.mysql_password, config.mysql_host, config.mysql_database)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.sqlalchemy_track_modifications
+app.config['SECRET_KEY'] = config.secret_key
+app.config['CSRF_ENABLED'] = config.csrf_enabled
 
 db = SQLAlchemy(app, session_options={'autoflush':True})
 
 # Enable debug mode if configured.
-if obvi_config.debug_mode:
+if config.debug_mode:
 	app.debug = True
 
 # models needs the db variable to be instantiated.
-import obviforum_app.models as models
+import obviforum.models as models
 
-# This needs to go here as there is a dependency in obvi_utilities on models, which needs 
+# This needs to go here as there is a dependency in utilities on models, which needs 
 # obvi.db instantiated.
-import obviforum_app.obvi_utilities as obvi_utilities
+import obviforum.utilities as utilities
 
 
 @app.route('/')
@@ -44,13 +44,13 @@ def index():
 	threads = models.Thread.query.join(models.User, models.Thread.originator_user_id==models.User.user_id).order_by(models.Thread.time_started.desc()).all()
 
 	authenticated_user = None
-	user_is_authenticated = obvi_utilities.is_user_authenticated()
+	user_is_authenticated = utilities.is_user_authenticated()
 	if user_is_authenticated:
-		authenticated_user = obvi_utilities.get_authenticated_user()
+		authenticated_user = utilities.get_authenticated_user()
 		thread_create_form = forms.CreateThreadForm()
-		return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads, authenticated_user=authenticated_user, welcome_text=obvi_config.welcome_text, thread_create_form=thread_create_form)
+		return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads, authenticated_user=authenticated_user, welcome_text=config.welcome_text, thread_create_form=thread_create_form)
 	else:
-		return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads, welcome_text=obvi_config.welcome_text, login_form=forms.LoginForm())
+		return render_template('index.tpl', user_is_authenticated=user_is_authenticated, threads=threads, welcome_text=config.welcome_text, login_form=forms.LoginForm())
 
 
 @app.route('/thread/<thread_id>')
@@ -62,9 +62,9 @@ def view_thread(thread_id = None):
 		posts = models.Post.query.filter_by(thread_id=thread.thread_id).join(models.User, models.User.user_id==models.Post.user_id).order_by(models.Post.post_datetime)
 
 		authenticated_user = None
-		user_is_authenticated = obvi_utilities.is_user_authenticated()
+		user_is_authenticated = utilities.is_user_authenticated()
 		if user_is_authenticated:
-			authenticated_user = obvi_utilities.get_authenticated_user()
+			authenticated_user = utilities.get_authenticated_user()
 			response_form = forms.RespondToPostForm(thread_id=thread_id)
 			return render_template('thread.tpl', thread=thread, user_is_authenticated=user_is_authenticated, authenticated_user=authenticated_user, posts=posts, response_form=response_form)
 		else:
@@ -74,10 +74,10 @@ def view_thread(thread_id = None):
 
 @app.route('/thread/create', methods=['POST'])
 def create_thread():
-	authenticated_user = obvi_utilities.require_authentication()
+	authenticated_user = utilities.require_authentication()
 
 	if authenticated_user:
-		#try:
+		try:
 			new_thread = models.Thread(request.form['new_thread_title'], originator_user_id = authenticated_user.user_id)
 			first_post = models.Post(request.form['post_content'], thread = new_thread, user_id = authenticated_user.user_id )
 
@@ -96,7 +96,7 @@ def create_thread():
 
 @app.route('/thread/respond', methods=['POST'])
 def add_post_to_thread():
-	authenticated_user = obvi_utilities.require_authentication()
+	authenticated_user = utilities.require_authentication()
 
 	if authenticated_user:
 		try:
@@ -144,9 +144,9 @@ def login():
 
 	# Method is either GET or the user did supply valid credintials.
 	authenticated_user = None
-	user_is_authenticated = obvi_utilities.is_user_authenticated()
+	user_is_authenticated = utilities.is_user_authenticated()
 	if user_is_authenticated:
-		authenticated_user = obvi_utilities.get_authenticated_user()
+		authenticated_user = utilities.get_authenticated_user()
 
 	return render_template('login.tpl', user_is_authenticated=user_is_authenticated, authenticated_user=authenticated_user, login_form=login_form);
 
@@ -158,7 +158,7 @@ def logout():
 
 @app.route('/signup')
 def signup ():
-	user_is_authenticated = obvi_utilities.is_user_authenticated()
+	user_is_authenticated = utilities.is_user_authenticated()
 	if user_is_authenticated:
 		# Authenticated users should not be accessing this page.
 		return redirect(url_for('index'))
@@ -168,9 +168,9 @@ def signup ():
 
 @app.route('/user')
 def show_user_profile():
-	user_is_authenticated = obvi_utilities.is_user_authenticated()
+	user_is_authenticated = utilities.is_user_authenticated()
 	if user_is_authenticated:
-		authenticated_user = obvi_utilities.get_authenticated_user()
+		authenticated_user = utilities.get_authenticated_user()
 		threads = models.Thread.query.filter_by(originator_user_id=authenticated_user.user_id).all()
 
 		thread_create_form = forms.CreateThreadForm()
@@ -187,7 +187,7 @@ def show_user_profile():
 # Add a new user to the system from the signup page
 @app.route('/user/create', methods=['POST'])
 def create_user_from_signup ():
-	user_is_authenticated = obvi_utilities.is_user_authenticated()
+	user_is_authenticated = utilities.is_user_authenticated()
 	if user_is_authenticated:
 		flash("An authenticated user cannot create a new account.", 'error')
 		abort(404)
@@ -212,7 +212,7 @@ def create_user_from_signup ():
 				flash("Your new user account could not be saved.", 'warning')
 				return redirect(url_for('signup'))
 		else:
-			obvi_utilities.queue_form_errors_in_flash(signup_form)
+			utilities.queue_form_errors_in_flash(signup_form)
 			return redirect(url_for('signup'))
 
 	return redirect(url_for('index'))
@@ -273,4 +273,4 @@ app.jinja_env.filters['nl2br'] = nl2br
 # Runs the application if called from the command line. 
 # Useful for development but not for production
 if __name__ == '__main__':
-	app.run(host=obvi_config.application_host)
+	app.run(host=config.application_host)
