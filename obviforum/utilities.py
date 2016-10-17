@@ -1,7 +1,7 @@
 # This module contains utility functions.
 from flask import session, redirect, flash
-import obviforum.models as models
-from obviforum.main import db
+import models
+from main import db
 
 """
 This function should be called at the beginning of any route that requires user authentication.

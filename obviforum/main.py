@@ -7,8 +7,8 @@ License: MIT
 
 from flask import Flask, url_for, render_template, flash, redirect, request, session, abort
 from flask_sqlalchemy import SQLAlchemy
-import obviforum.config as config
-import obviforum.forms as forms
+import config
+import forms
 import re # Regular expressions.
 from datetime import datetime
 from jinja2 import evalcontextfilter, Markup, escape
@@ -32,11 +32,11 @@ if config.debug_mode:
 	app.debug = True
 
 # models needs the db variable to be instantiated.
-import obviforum.models as models
+import models
 
 # This needs to go here as there is a dependency in utilities on models, which needs 
 # obvi.db instantiated.
-import obviforum.utilities as utilities
+import utilities
 
 
 @app.route('/')
