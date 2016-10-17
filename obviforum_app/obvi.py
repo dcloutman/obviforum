@@ -6,9 +6,9 @@ License: MIT
 """
 
 from flask import Flask, url_for, render_template, flash, redirect, request, session, abort
-from flask.ext.sqlalchemy import SQLAlchemy
-import obvi_config as obvi_config
-import forms
+from flask_sqlalchemy import SQLAlchemy
+import obviforum_app.obvi_config as obvi_config
+import obviforum_app.forms as forms
 import re # Regular expressions.
 from datetime import datetime
 from jinja2 import evalcontextfilter, Markup, escape
@@ -20,7 +20,8 @@ static_folder = "themes/{0}/static".format(obvi_config.theme)
 app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
 
 # Set up the database
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://{0}:{1}@{2}/{3}".format(obvi_config.mysql_username, obvi_config.mysql_password, obvi_config.mysql_host, obvi_config.mysql_database)
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://{0}:{1}@{2}/{3}".format(obvi_config.mysql_username, obvi_config.mysql_password, obvi_config.mysql_host, obvi_config.mysql_database)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SECRET_KEY'] = obvi_config.secret_key
 app.config['CSRF_ENABLED'] = obvi_config.csrf_enabled
 
@@ -31,11 +32,11 @@ if obvi_config.debug_mode:
 	app.debug = True
 
 # models needs the db variable to be instantiated.
-import models
+import obviforum_app.models as models
 
 # This needs to go here as there is a dependency in obvi_utilities on models, which needs 
 # obvi.db instantiated.
-import obvi_utilities as obvi_utilities
+import obviforum_app.obvi_utilities as obvi_utilities
 
 
 @app.route('/')
@@ -76,7 +77,7 @@ def create_thread():
 	authenticated_user = obvi_utilities.require_authentication()
 
 	if authenticated_user:
-		try:
+		#try:
 			new_thread = models.Thread(request.form['new_thread_title'], originator_user_id = authenticated_user.user_id)
 			first_post = models.Post(request.form['post_content'], thread = new_thread, user_id = authenticated_user.user_id )
 

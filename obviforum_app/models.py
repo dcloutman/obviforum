@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from obvi import db
-import obvi_config
+from obviforum_app.obvi import db
+import obviforum_app.obvi_config as obvi_config
 from datetime import datetime
 from sqlalchemy.dialects import mysql
 import hashlib
@@ -31,7 +31,9 @@ class User(db.Model):
 	def hash_password (password):
 		#Use sha256 hashing to store the algorithm. Salt is appended to the user input to make reverse lookup more difficult.
 		sha = hashlib.sha256()
-		sha.update( password + obvi_config.user_password_salt )
+		to_hash = password + obvi_config.user_password_salt
+		to_hash = to_hash.encode('utf-8')
+		sha.update(to_hash)
 		return sha.hexdigest()
 
 
