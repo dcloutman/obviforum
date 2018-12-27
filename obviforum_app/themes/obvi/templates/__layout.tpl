@@ -4,6 +4,7 @@
 		<meta charset="utf-8" />
 		<title>{% block title %}{% endblock %}</title>
 		{% include '_custom_head_tags.tpl' %}
+	</head>
 	<body>
 		{% include '_javascript_before_opening_body.tpl' %}
 		<div id="outer">
